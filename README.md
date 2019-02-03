@@ -1,5 +1,5 @@
 # sd.vim
-Simple and small vim wrapper for sd
+Simple and small vim wrapper for [sd](https://github.com/chmln/sd)
 
 For people how are used to PCRE / Python / JavaScript style regular expression search and replace and fight with sed every other day.
 
