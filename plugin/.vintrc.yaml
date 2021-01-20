@@ -1,0 +1,11 @@
+cmdargs:
+  # Checking more strictly
+  severity: warning
+  stat: true
+
+  # Enable coloring
+  color: true
+
+  # Enable Neovim syntax
+  env:
+    neovim: true

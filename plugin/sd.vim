@@ -1,23 +1,36 @@
 """
 " sd.vim
-" 5 lines of code to use sd from a vim buffer.
 "
-" Provides the command Sd
+" Provides more familiar replace and substitute commands with the help of sd
 "
 " Example
 "
 " > sed is easy
-" :Sd 'sed(\ .*)' 'sd$1'
+" :RegexReplace sed(\ .*) sd$1
 " > sd is easy
 "
-" Caveats
-"
-" 1. You are still using your shell. Single quote your input!
-" 2. Spaces have to be escaped with backslash. That is because vim.
 """
 
-function! Execsd(command)
-    exe '% !sd '.a:command
+
+function! sd#use_literal(sfind, sreplace)
+    let l:find = shellescape(expand(a:sfind))
+    let l:replace = shellescape(expand(a:sreplace))
+    execute '% !sd --string-mode '.l:find.' '.l:replace
 endfunction
 
-command! -nargs=1 -complete=command Sd call Execsd(<f-args>)
+function! sd#use_regex(sfind, sreplace,...)
+    let l:find = shellescape(expand(a:sfind))
+    let l:replace = shellescape(expand(a:sreplace))
+    let l:flagsopt = get(a:000, 2, '')
+    if a:0 > 0
+        let l:flags = "-f ". a:1
+        let l:cmdline = l:flags.' '.l:find.' '.l:replace
+        execute '% !sd '.l:cmdline
+    else
+        execute '% !sd '.l:find.' '.l:replace
+    endif
+endfunction
+
+
+command! -nargs=+ -complete=command RegexReplace call sd#use_regex(<f-args>)
+command! -nargs=+ -complete=command SimpleReplace call sd#use_regex(<f-args>)
